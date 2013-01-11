@@ -6,8 +6,9 @@ import re
 class ProEmailField(forms.EmailField):
     
     '''
-    subclasses forms.EmailField, which validates against empty values, and that it is a correct email.
-    then validate_pro will check whether not part of the excluded domains.
+    Validates that the email domain is not part of a list of excluded ones. Pass your list of excluded domains upon instantiation.
+    subclasses forms.EmailField, which validates against empty values, and that the supplied value is a real email.
+    then the validate_pro method will check whether not part of the excluded domains.
     I used an extra method as opposed to a custom validator because it seems to be difficult to know which validator is run first
     and we do want the default email validator to run first because otherwise there is a chance that the regexp will fail and crash the site.
     '''
