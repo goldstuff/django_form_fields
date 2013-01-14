@@ -1,4 +1,4 @@
-A bunch of form fields for Django projects
+A bunch of form fields for Django projects, you can add it as an app to your django project, includes tests...
 
 ProEmailField:
 
