@@ -13,15 +13,21 @@ or just add formfields.py and tests.py to the same existing app folder
 
 from formfields import ProEmailField, HtmlExtractField, UserEmailField
 
-class ProEmailFieldTestCase(unittest.TestCase):
+class FormFieldTestCase(object):
+    #base class, not part of unittest
+    def tearDown(self):
+        self.formfield = None
+        
+    def test_empty_fails(self):
+        self.assertRaises(ValidationError, self.formfield.clean, '')
+
+
+class ProEmailFieldTestCase(unittest.TestCase, FormFieldTestCase):
         
     def setUp(self):
         #pass along a list of excluded domains upon instantiation
         self.formfield = ProEmailField(['gmail', 'yahoo'])
-        
-    def tearDown(self):
-        self.formfield = None
-        
+                
     def test_clean_fails(self):
         self.assertRaises(ValidationError, self.formfield.clean,'greg@gmail.com')
         
@@ -29,7 +35,8 @@ class ProEmailFieldTestCase(unittest.TestCase):
         #if value validates, clean must return the value
         self.assertEqual(self.formfield.clean('greg@corpemail.com'), u'greg@corpemail.com')
 
-class HtmlExtractFieldTestCase(unittest.TestCase):
+
+class HtmlExtractFieldTestCase(unittest.TestCase, FormFieldTestCase):
     
     def setUp(self):
         self.formfield = HtmlExtractField(
@@ -41,9 +48,6 @@ class HtmlExtractFieldTestCase(unittest.TestCase):
         widget=forms.Textarea(attrs={'style': "width: 800px; height: 125px;"})
         )
         self.correct_input = '"http://www.slideshare.net/slideshow/embed_code/15936422" (.....) title="How to create great slides for presentations"'
-
-    def tearDown(self):
-        self.formfield = None
     
     def test_clean_fails(self):
         self.assertRaises(ValidationError, self.formfield.clean, 'www.slideshare.net/thereisnothinghere')
@@ -52,15 +56,13 @@ class HtmlExtractFieldTestCase(unittest.TestCase):
         #if value validates, clean must return the value
         self.assertEqual(self.formfield.clean(self.correct_input), ['15936422', 'How to create great slides for presentations'])
 
-class UserEmailFieldTestCase(TestCase):
+
+class UserEmailFieldTestCase(TestCase, FormFieldTestCase):
     
     def setUp(self):
         self.formfield = UserEmailField()
         self.user = User.objects.create_user(username='test', email='test@gmail.com')
-        
-    def tearDown(self):
-        self.formfield = None
-    
+            
     def test_clean_fails(self):
         self.assertRaises(ValidationError, self.formfield.clean, 'info@gmail.com')
     
