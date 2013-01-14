@@ -4,7 +4,12 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 
-'''put the test.py and formfields.py in an application directory and run "python manage.py test <application name>" from your project's root directory'''
+'''
+run as "$ python manage.py test formfields" from your project's root
+after adding formfields to your INSTALLED_APPS
+or just add formfields.py and tests.py to the same existing app folder
+
+'''
 
 from formfields import ProEmailField, HtmlExtractField, UserEmailField
 
