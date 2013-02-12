@@ -11,7 +11,7 @@ or just add formfields.py and tests.py to the same existing app folder
 
 '''
 
-from formfields import ProEmailField, HtmlExtractField, UserEmailField
+from formfields import ProEmailField, RegexpExtractField, UserEmailField
 
 class FormFieldTestCase(object):
     #base class, not part of unittest
@@ -36,10 +36,10 @@ class ProEmailFieldTestCase(unittest.TestCase, FormFieldTestCase):
         self.assertEqual(self.formfield.clean('greg@corpemail.com'), u'greg@corpemail.com')
 
 
-class HtmlExtractFieldTestCase(unittest.TestCase, FormFieldTestCase):
+class RegexpExtractFieldTestCase(unittest.TestCase, FormFieldTestCase):
     
     def setUp(self):
-        self.formfield = HtmlExtractField(
+        self.formfield = RegexpExtractField(
         r'.+slideshare.net/slideshow/embed_code/(?P<id>\d+).+title="(?P<title>[^"]+)"',
         ['id', 'title'],
         'there is something wrong with the SlideShares Embed code you pasted, please try again',

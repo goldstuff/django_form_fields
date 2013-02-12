@@ -56,7 +56,7 @@ class RegexpExtractField(forms.CharField):
         self.regexp = re.compile(regexp)
         self.groups = groups
         self.errormessage = errormessage
-        super(HtmlExtractField, self).__init__(self,**kwargs)
+        super(RegexpExtractField, self).__init__(self,**kwargs)
 
     def validate(self, value):
         if not self.regexp.match(value):
